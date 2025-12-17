@@ -1,3 +1,13 @@
+<!--
+SAVE AS: index.html
+
+Put these files in the SAME folder:
+  - ny1.jpg  ny2.jpg  ny3.jpg  ny4.jpg   (or .png)
+Optional GIFs (can omit any/all):
+  - cute1.gif  cute2.gif  cute3.gif
+
+Upload the folder to Netlify (Drop).
+-->
 <!doctype html>
 <html lang="vi">
 <head>
@@ -6,13 +16,13 @@
   <title>Noel</title>
   <style>
     :root{
-      --pink1:#ff4fa0;
-      --pink2:#ffb6d9;
-      --pink3:#ff79bb;
+      --pink1:#ff3f97;
+      --pink2:#ffb7da;
+      --pink3:#ff6fb4;
       --txt:#ffffff;
       --shadow: rgba(0,0,0,.22);
-      --card: rgba(255,255,255,.20);
-      --bd: rgba(255,255,255,.55);
+      --card: rgba(255,255,255,.18);
+      --bd: rgba(255,255,255,.45);
     }
     *{box-sizing:border-box}
     body{
@@ -34,7 +44,7 @@
       align-items:center;
       justify-content:center;
       gap:18px;
-      padding:28px 16px 140px;
+      padding:28px 16px 160px;
       text-align:center;
     }
 
@@ -46,7 +56,7 @@
       text-shadow: 0 12px 45px var(--shadow);
     }
 
-    /* 4 photos: nho-vua-vua, 2x2 */
+    /* 4 photos grid */
     .photos{
       display:grid;
       grid-template-columns: repeat(2, 1fr);
@@ -58,14 +68,19 @@
       box-shadow: 0 18px 60px var(--shadow);
       backdrop-filter: blur(10px);
     }
+
     .photoWrap{
-      width: clamp(92px, 18vw, 150px);
+      width: clamp(86px, 18vw, 150px);
       aspect-ratio: 1 / 1;
       border-radius: 22px;
       padding: 8px;
       background: var(--card);
       border: 1px solid rgba(255,255,255,.18);
       position:relative;
+
+      /* random transform controlled by JS */
+      transform: rotate(var(--rot, 0deg)) translate(var(--dx, 0px), var(--dy, 0px)) scale(var(--sc, 1));
+      transition: transform 260ms ease;
     }
     .photoWrap:before{
       content:"";
@@ -73,7 +88,7 @@
       inset:-8px;
       border-radius: 26px;
       border: 2px solid var(--bd);
-      opacity:.45;
+      opacity:.40;
       pointer-events:none;
     }
     .photo{
@@ -84,10 +99,10 @@
       display:block;
     }
 
-    /* Tree */
+    /* Xmas tree */
     .tree{
       position:fixed;
-      bottom:12px;
+      bottom:10px;
       left:50%;
       transform:translateX(-50%);
       font-size: clamp(58px, 10vw, 118px);
@@ -102,7 +117,7 @@
       50%{ transform:translateX(-50%) translateY(-8px) }
     }
 
-    /* Cute GIFs (optional) */
+    /* Optional GIF stickers */
     .gif{
       position:fixed;
       width: min(170px, 28vw);
@@ -115,8 +130,7 @@
     }
     .gif.g1{ top:14px; left:14px; animation-duration: 3.4s; }
     .gif.g2{ top:16px; right:14px; animation-duration: 3.0s; }
-    .gif.g3{ bottom:140px; left:16px; animation-duration: 3.6s; }
-
+    .gif.g3{ bottom:150px; left:16px; animation-duration: 3.6s; }
     @keyframes floaty{
       0%,100%{ transform: translateY(0) rotate(-1deg); }
       50%{ transform: translateY(-10px) rotate(1deg); }
@@ -125,68 +139,7 @@
     /* Floating hearts */
     .hearts{ position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
     .heart{
-      position:absolute; left:var(--x); bottom:-140px;
-      width:22px; height:22px;
-      transform: rotate(45deg);
-      background: rgba(255, 92, 122, .75);
-      animation: floatUp var(--dur) linear infinite;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.30));
-      opacity:.92;
-    }
-    .heart:before,.heart:after{
-      content:""; position:absolute; width:22px; height:22px; border-radius:50%;
-      background: inherit;
-    }
-    .heart:before{left:-11px; top:0}
-    .heart:after{left:0; top:-11px}
-    @keyframes floatUp{
-      to { transform: translateY(-125vh) translateX(var(--drift)) rotate(45deg); }
-    }
-
-    /* Small mobile tweaks */
-    @media (max-width:420px){
-      .center{ padding-bottom: 160px; }
-      .gif{ width: min(140px, 34vw); }
-      .gif.g3{ bottom: 160px; }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="hearts" id="hearts"></div>
-
-  <!-- Optional GIFs: neu khong co file gif thi xoa 3 dong img nay -->
-  <img class="gif g1" src="cute1.gif" alt="" />
-  <img class="gif g2" src="cute2.gif" alt="" />
-  <img class="gif g3" src="cute3.gif" alt="" />
-
-  <div class="center">
-    <h1>em oi di choi noel voi anh nhe</h1>
-
-    <div class="photos" aria-label="4 anh">
-      <div class="photoWrap"><img class="photo" src="ny1.jpg" alt="ny 1"></div>
-      <div class="photoWrap"><img class="photo" src="ny2.jpg" alt="ny 2"></div>
-      <div class="photoWrap"><img class="photo" src="ny3.jpg" alt="ny 3"></div>
-      <div class="photoWrap"><img class="photo" src="ny4.jpg" alt="ny 4"></div>
-    </div>
-  </div>
-
-  <div class="tree">🎄</div>
-
-  <script>
-    // tao tim bay bay
-    const hearts = document.getElementById('hearts');
-    const count = 20;
-    for (let i=0;i<count;i++){
-      const h=document.createElement('div');
-      h.className='heart';
-      h.style.setProperty('--x', Math.round(Math.random()*100)+'vw');
-      h.style.setProperty('--dur', (5+Math.random()*4).toFixed(2)+'s');
-      h.style.setProperty('--drift', (Math.random()*160-80).toFixed(0)+'px');
-      h.style.animationDelay = (-Math.random()*6).toFixed(2)+'s';
-      h.style.transform = `rotate(45deg) scale(${(0.85+Math.random()*1.35).toFixed(2)})`;
-      hearts.appendChild(h);
-    }
-  </script>
-</body>
-</html>
+      position:absolute;
+      left:var(--x);
+      bottom:-160px;
+      width:22px; he
