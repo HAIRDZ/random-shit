@@ -1,63 +1,136 @@
-<!-- Lưu file này là: index.html  (đúng tên) rồi kéo-thả lên Netlify -->
 <!doctype html>
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Noel Date</title>
+  <title>Noel</title>
   <style>
     :root{
-      --bg1:#071b14; --bg2:#103425; --txt:#f3f3f3;
-      --card: rgba(255,255,255,.07);
-      --bd: rgba(255,255,255,.14);
+      --pink1:#ff4fa0;
+      --pink2:#ffb6d9;
+      --pink3:#ff79bb;
+      --txt:#ffffff;
+      --shadow: rgba(0,0,0,.22);
+      --card: rgba(255,255,255,.20);
+      --bd: rgba(255,255,255,.55);
     }
     *{box-sizing:border-box}
     body{
-      margin:0; min-height:100vh; overflow-x:hidden;
+      margin:0; min-height:100vh; overflow:hidden;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--txt);
-      background: radial-gradient(1200px 800px at 50% 10%, #1a4a34 0%, var(--bg1) 55%, #04110c 100%);
+      background:
+        radial-gradient(900px 600px at 20% 10%, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(900px 600px at 80% 20%, rgba(255,255,255,.25), transparent 65%),
+        linear-gradient(180deg, var(--pink1), var(--pink3) 55%, var(--pink2));
     }
-    .wrap{max-width:860px; margin:0 auto; padding:38px 18px 70px;}
-    .card{
-      background: var(--card);
-      border: 1px solid var(--bd);
-      border-radius: 24px;
-      padding: 22px 22px 26px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+
+    .center{
+      position:relative;
+      z-index:2;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      padding:28px 16px 140px;
+      text-align:center;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(30px, 6vw, 62px);
+      line-height:1.05;
+      letter-spacing:.2px;
+      text-shadow: 0 12px 45px var(--shadow);
+    }
+
+    /* 4 photos: nho-vua-vua, 2x2 */
+    .photos{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 14px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 18px 60px var(--shadow);
       backdrop-filter: blur(10px);
     }
-    h1{font-size:clamp(28px,4.2vw,46px); margin:0 0 10px}
-    .sub{opacity:.92; margin:0 0 18px; font-size:clamp(14px,2.3vw,18px)}
-    .info{line-height:1.75; font-size:clamp(16px,2.6vw,20px)}
-    .tree{font-size: clamp(52px, 9vw, 86px); margin: 10px 0 0; filter: drop-shadow(0 10px 28px rgba(0,0,0,.45));}
-    .row{display:grid; grid-template-columns:1fr; gap:16px; margin-top:18px}
-    @media (min-width:760px){ .row{grid-template-columns:1fr 260px; align-items:center} }
-    .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
-    a.btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 14px; border-radius:999px; text-decoration:none;
-      color:var(--txt);
-      border:1px solid rgba(255,255,255,.20);
-      background: rgba(255,255,255,.10);
+    .photoWrap{
+      width: clamp(92px, 18vw, 150px);
+      aspect-ratio: 1 / 1;
+      border-radius: 22px;
+      padding: 8px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.18);
+      position:relative;
     }
-    a.btn:hover{background: rgba(255,255,255,.16)}
-    .qr{
-      background:#fff; border-radius:18px; padding:10px;
-      width: 230px; max-width: 75vw; margin: 0 auto;
-      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+    .photoWrap:before{
+      content:"";
+      position:absolute;
+      inset:-8px;
+      border-radius: 26px;
+      border: 2px solid var(--bd);
+      opacity:.45;
+      pointer-events:none;
     }
-    .qr img{display:block; width:100%; height:auto; border-radius:12px}
-    .hint{opacity:.8; font-size:14px; margin-top:10px; text-align:center}
+    .photo{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius: 16px;
+      display:block;
+    }
 
-    /* Hearts */
-    .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden}
+    /* Tree */
+    .tree{
+      position:fixed;
+      bottom:12px;
+      left:50%;
+      transform:translateX(-50%);
+      font-size: clamp(58px, 10vw, 118px);
+      filter: drop-shadow(0 18px 40px rgba(0,0,0,.25));
+      z-index:2;
+      user-select:none;
+      pointer-events:none;
+      animation: treeBounce 2.6s ease-in-out infinite;
+    }
+    @keyframes treeBounce{
+      0%,100%{ transform:translateX(-50%) translateY(0) }
+      50%{ transform:translateX(-50%) translateY(-8px) }
+    }
+
+    /* Cute GIFs (optional) */
+    .gif{
+      position:fixed;
+      width: min(170px, 28vw);
+      height:auto;
+      z-index:2;
+      filter: drop-shadow(0 16px 28px rgba(0,0,0,.22));
+      user-select:none;
+      pointer-events:none;
+      animation: floaty 3.2s ease-in-out infinite;
+    }
+    .gif.g1{ top:14px; left:14px; animation-duration: 3.4s; }
+    .gif.g2{ top:16px; right:14px; animation-duration: 3.0s; }
+    .gif.g3{ bottom:140px; left:16px; animation-duration: 3.6s; }
+
+    @keyframes floaty{
+      0%,100%{ transform: translateY(0) rotate(-1deg); }
+      50%{ transform: translateY(-10px) rotate(1deg); }
+    }
+
+    /* Floating hearts */
+    .hearts{ position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
     .heart{
       position:absolute; left:var(--x); bottom:-140px;
-      width:22px; height:22px; transform: rotate(45deg);
+      width:22px; height:22px;
+      transform: rotate(45deg);
       background: rgba(255, 92, 122, .75);
       animation: floatUp var(--dur) linear infinite;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.30));
       opacity:.92;
     }
     .heart:before,.heart:after{
@@ -70,90 +143,41 @@
       to { transform: translateY(-125vh) translateX(var(--drift)) rotate(45deg); }
     }
 
-    /* Snow */
-    .snow{position:fixed; inset:0; pointer-events:none}
-    .flake{
-      position:absolute; top:-20px; left:var(--sx);
-      width:var(--sr); height:var(--sr); border-radius:50%;
-      background: rgba(255,255,255,.78);
-      animation: fall var(--sd) linear infinite;
-      opacity:.9;
+    /* Small mobile tweaks */
+    @media (max-width:420px){
+      .center{ padding-bottom: 160px; }
+      .gif{ width: min(140px, 34vw); }
+      .gif.g3{ bottom: 160px; }
     }
-    @keyframes fall{
-      to { transform: translateY(112vh) translateX(var(--sdrift)); }
-    }
-
-    /* small footer */
-    .footer{opacity:.7; font-size:13px; margin-top:18px}
   </style>
 </head>
 
 <body>
   <div class="hearts" id="hearts"></div>
-  <div class="snow" id="snow"></div>
 
-  <div class="wrap">
-    <div class="card">
-      <h1 id="title">Em ơi, đi chơi Noel với anh nhé?</h1>
-      <p class="sub">Scan QR để mở bất ngờ 🎁</p>
+  <!-- Optional GIFs: neu khong co file gif thi xoa 3 dong img nay -->
+  <img class="gif g1" src="cute1.gif" alt="" />
+  <img class="gif g2" src="cute2.gif" alt="" />
+  <img class="gif g3" src="cute3.gif" alt="" />
 
-      <div class="info">
-        <div>📅 <span id="dateLine">Tối 24/12</span> • ⏰ <span id="timeLine">19:00</span></div>
-        <div>📍 <span id="placeLine">Hẹn: (điểm đón / quán cà phê)</span></div>
-        <div>🪄 <span id="planLine">Đi: (địa điểm bí mật 😉)</span></div>
-        <div>👗 <span id="dressCode">Dress code: đỏ / trắng / ấm áp</span></div>
-        <div class="tree">🎄</div>
-      </div>
+  <div class="center">
+    <h1>em oi di choi noel voi anh nhe</h1>
 
-      <div class="row">
-        <div>
-          <div class="btns">
-            <a class="btn" id="openLink" href="#" target="_blank" rel="noreferrer">Mở link bất ngờ</a>
-            <a class="btn" href="#qr">Hoặc scan QR</a>
-          </div>
-          <div class="footer">Bạn có thể đổi nội dung ngay trong phần “CONFIG” ở dưới (không cần sửa CSS).</div>
-        </div>
-
-        <div class="qr" id="qr">
-          <img id="qrImg" alt="QR" />
-          <div class="hint">Nếu không quét được, bấm nút “Mở link bất ngờ”.</div>
-        </div>
-      </div>
+    <div class="photos" aria-label="4 anh">
+      <div class="photoWrap"><img class="photo" src="ny1.jpg" alt="ny 1"></div>
+      <div class="photoWrap"><img class="photo" src="ny2.jpg" alt="ny 2"></div>
+      <div class="photoWrap"><img class="photo" src="ny3.jpg" alt="ny 3"></div>
+      <div class="photoWrap"><img class="photo" src="ny4.jpg" alt="ny 4"></div>
     </div>
   </div>
 
+  <div class="tree">🎄</div>
+
   <script>
-    // ===== CONFIG: SỬA Ở ĐÂY =====
-    const CONFIG = {
-      girlName: "Em",
-      dateLine: "Tối 24/12",
-      timeLine: "19:00",
-      placeLine: "Hẹn: (điểm đón / quán cà phê)",
-      planLine: "Đi: (địa điểm bí mật 😉)",
-      dressCode: "Dress code: đỏ / trắng / ấm áp",
-      surpriseUrl: "https://maps.google.com/?q=Ho+Chi+Minh+City" // dán link thật vào đây
-    };
-    // =============================
-
-    // Apply text
-    document.getElementById("title").textContent = `${CONFIG.girlName} ơi, đi chơi Noel với anh nhé?`;
-    document.getElementById("dateLine").textContent = CONFIG.dateLine;
-    document.getElementById("timeLine").textContent = CONFIG.timeLine;
-    document.getElementById("placeLine").textContent = CONFIG.placeLine;
-    document.getElementById("planLine").textContent = CONFIG.planLine;
-    document.getElementById("dressCode").textContent = CONFIG.dressCode;
-
-    // Link + QR (dùng dịch vụ tạo QR ảnh online)
-    const openLink = document.getElementById("openLink");
-    openLink.href = CONFIG.surpriseUrl;
-
-    const qrImg = document.getElementById("qrImg");
-    const encoded = encodeURIComponent(CONFIG.surpriseUrl);
-    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data=${encoded}`;
-
-    // Hearts
+    // tao tim bay bay
     const hearts = document.getElementById('hearts');
-    for (let i=0;i<18;i++){
+    const count = 20;
+    for (let i=0;i<count;i++){
       const h=document.createElement('div');
       h.className='heart';
       h.style.setProperty('--x', Math.round(Math.random()*100)+'vw');
@@ -162,19 +186,6 @@
       h.style.animationDelay = (-Math.random()*6).toFixed(2)+'s';
       h.style.transform = `rotate(45deg) scale(${(0.85+Math.random()*1.35).toFixed(2)})`;
       hearts.appendChild(h);
-    }
-
-    // Snow
-    const snow = document.getElementById('snow');
-    for (let i=0;i<95;i++){
-      const f=document.createElement('div');
-      f.className='flake';
-      f.style.setProperty('--sx', Math.round(Math.random()*100)+'vw');
-      f.style.setProperty('--sr', (1+Math.random()*3).toFixed(1)+'px');
-      f.style.setProperty('--sd', (5+Math.random()*7).toFixed(2)+'s');
-      f.style.setProperty('--sdrift', (Math.random()*120-60).toFixed(0)+'px');
-      f.style.animationDelay = (-Math.random()*8).toFixed(2)+'s';
-      snow.appendChild(f);
     }
   </script>
 </body>
