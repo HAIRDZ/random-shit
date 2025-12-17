@@ -45,6 +45,8 @@ Upload the folder to Netlify Drop.
       gap:14px;
       padding:28px 16px 170px;
       text-align:center;
+      max-width: 980px;
+      margin: 0 auto;
     }
 
     h1{
@@ -55,9 +57,8 @@ Upload the folder to Netlify Drop.
       text-shadow: 0 12px 45px var(--shadow);
     }
 
-    /* One cute gif (center-top, not blocking text) */
     .gif{
-      width: min(190px, 42vw);
+      width: min(170px, 38vw);
       height:auto;
       filter: drop-shadow(0 16px 28px rgba(0,0,0,.22));
       user-select:none;
@@ -70,12 +71,12 @@ Upload the folder to Netlify Drop.
       50%{ transform: translateY(-10px) rotate(1deg); }
     }
 
-    /* Photo stage: neat 2x2 grid (NO overlap) */
+    /* Photo stage: thu nhỏ lại để desktop nhìn gọn */
     .photosStage{
       position:relative;
-      width: min(620px, 92vw);
-      padding: 18px;
-      border-radius: 26px;
+      width: min(520px, 86vw);   /* CHANGED: nhỏ hơn */
+      padding: 14px;             /* CHANGED: giảm padding */
+      border-radius: 24px;
       background: var(--glass);
       border: 1px solid var(--bd);
       box-shadow: 0 18px 60px rgba(0,0,0,.20);
@@ -86,15 +87,14 @@ Upload the folder to Netlify Drop.
     .photosGrid{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
+      gap: 14px;                 /* CHANGED: giảm gap */
       align-items: stretch;
     }
 
-    /* Polaroid-like cards */
     .photoCard{
       position:relative;
       width:100%;
-      aspect-ratio: 4 / 5; /* looks more like polaroid */
+      aspect-ratio: 4 / 5;
       transform: rotate(var(--rot, 0deg)) translate(var(--tx, 0px), var(--ty, 0px));
       transition: transform 220ms ease, filter 220ms ease;
       will-change: transform;
@@ -104,29 +104,28 @@ Upload the folder to Netlify Drop.
       filter: drop-shadow(0 18px 36px rgba(0,0,0,.22));
     }
 
+    /* CHANGED: khung polaroid gọn hơn */
     .frame{
       width:100%; height:100%;
-      border-radius: 18px;
-      padding: 10px 10px 22px; /* thicker bottom like polaroid */
+      border-radius: 16px;
+      padding: 8px 8px 18px;
       background: rgba(255,255,255,.92);
       box-shadow: 0 16px 40px rgba(0,0,0,.20);
       border: 1px solid rgba(0,0,0,.06);
     }
     .photo{
       width:100%; height:100%;
-      border-radius: 12px;
+      border-radius: 10px;
       object-fit: cover;
       display:block;
       background: #eee;
     }
 
-    /* Tasteful offsets per card */
     .photosGrid .photoCard:nth-child(1){ --rot:-5deg; --tx:-6px; --ty: 4px; }
     .photosGrid .photoCard:nth-child(2){ --rot: 4deg; --tx: 6px;  --ty:-4px; }
     .photosGrid .photoCard:nth-child(3){ --rot: 3deg; --tx:-8px; --ty: 6px; }
     .photosGrid .photoCard:nth-child(4){ --rot:-4deg; --tx: 8px;  --ty: 6px; }
 
-    /* Xmas tree */
     .tree{
       position:fixed;
       bottom:10px;
@@ -144,7 +143,6 @@ Upload the folder to Netlify Drop.
       50%{ transform:translateX(-50%) translateY(-8px) }
     }
 
-    /* Floating hearts */
     .hearts{ position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
     .heart{
       position:absolute;
@@ -172,7 +170,7 @@ Upload the folder to Netlify Drop.
 
     @media (max-width:420px){
       .center{ padding-bottom: 200px; }
-      .photosStage{ padding: 14px; }
+      .photosStage{ padding: 14px; width: min(520px, 92vw); }
       .photosGrid{ gap: 12px; }
       .photoCard{ aspect-ratio: 1 / 1.12; }
       .photosGrid .photoCard:nth-child(1){ --rot:-3deg; --tx:-3px; --ty: 2px; }
@@ -209,11 +207,9 @@ Upload the folder to Netlify Drop.
   <div class="tree">🎄</div>
 
   <script>
-    // Hide GIF if missing
     const gif = document.getElementById('gif1');
     gif.onerror = () => gif.remove();
 
-    // Optional: shuffle cards but keep the 2x2 grid layout (no overlap)
     (function shuffleGrid(){
       const grid = document.getElementById('grid');
       if (!grid) return;
@@ -225,7 +221,6 @@ Upload the folder to Netlify Drop.
       cards.forEach(c => grid.appendChild(c));
     })();
 
-    // Floating hearts
     (function hearts(){
       const wrap = document.getElementById('hearts');
       const count = 22;
