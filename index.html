@@ -123,8 +123,8 @@
         
         <!-- TRÒ CHƠI BAN ĐẦU -->
         <div class="game-container" id="game-box">
-            <div class="game-info">Hãy ăn 5 trái tim để nhận quà nhé! ❤️</div>
-            <div class="game-info">Điểm của em: <span id="scoreVal">0</span></div>
+            <!-- <div class="game-info">Hãy ăn 5 trái tim để nhận quà nhé! ❤️</div> -->
+            <div class="game-info">Điểm của Smai: <span id="scoreVal">0</span></div>
             <div class="game-section">
                 <canvas id="snakeGame" width="300" height="300"></canvas>
             </div>
@@ -217,7 +217,7 @@
                snake.some((segment, index) => index !== 0 && segment.x === newHead.x && segment.y === newHead.y)) {
                 if(score < 5) {
                     gameActive = false;
-                    alert("Cố lên công chúa ơi, sắp được 5 điểm rồi!");
+                    alert("Co len Smai");
                     document.location.reload();
                 }
             }
