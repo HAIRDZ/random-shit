@@ -13,7 +13,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #fff0f5; /* Hồng pastel cực nhạt */
+            background-color: #fff0f5; 
             font-family: 'Quicksand', sans-serif;
             overflow: hidden;
         }
@@ -23,33 +23,42 @@
             z-index: 10;
         }
 
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
-            color: #db7093;
-            margin-top: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
-            animation: fadeIn 2s ease-in;
+        /* Khung ảnh ở giữa */
+        .photo-frame {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%; /* Hình tròn */
+            border: 8px solid white;
+            box-shadow: 0 10px 25px rgba(219, 112, 147, 0.3);
+            object-fit: cover; /* Giúp ảnh không bị méo */
+            animation: bounce 2s infinite alternate;
         }
 
         .visuals {
             display: flex;
             justify-content: center;
-            align-items: flex-end;
-            gap: 40px;
+            align-items: center;
+            gap: 20px;
             margin-bottom: 20px;
             animation: slideUp 1.5s ease-out;
         }
 
-        /* Hiệu ứng cho hoa và bánh */
         .flower, .cake {
-            font-size: 100px;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
-            transition: transform 0.3s ease;
+            font-size: 80px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
         }
 
-        .flower:hover, .cake:hover {
-            transform: scale(1.1) rotate(5deg);
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #db7093;
+            margin-top: 30px;
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
         }
 
         @keyframes fadeIn {
@@ -58,11 +67,10 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Hiệu ứng tim rơi lãng mạn */
         .heart {
             position: absolute;
             color: #ffb6c1;
@@ -73,9 +81,15 @@
         }
 
         @keyframes fall {
-            to {
-                transform: translateY(110vh) rotate(360deg);
-            }
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Responsive cho điện thoại */
+        @media (max-width: 600px) {
+            .visuals { gap: 10px; }
+            .photo-frame { width: 150px; height: 150px; }
+            .flower, .cake { font-size: 50px; }
+            h1 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -84,28 +98,26 @@
     <div class="container">
         <div class="visuals">
             <div class="flower">💐</div>
+            <!-- Thay 'anh-cua-toi.jpg' bằng tên file ảnh bạn đã upload -->
+            <img src="anh-cua-toi.jpg" alt="My Princess" class="photo-frame">
             <div class="cake">🎂</div>
         </div>
-        <h1>Happy Bỉthday My Lil Princess</h1>
+        <h1>Happy Birthday My Lil Princess</h1>
     </div>
 
     <script>
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
-            heart.innerHTML = '🌸'; // Bạn có thể đổi thành '❤️' nếu muốn
+            heart.innerHTML = ['🌸','❤️','✨','💕'][Math.floor(Math.random()*4)];
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.top = '-10%';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
             heart.style.opacity = Math.random();
             document.body.appendChild(heart);
-
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
+            setTimeout(() => { heart.remove(); }, 6000);
         }
-
-        // Tạo hiệu ứng rơi nhẹ nhàng ngay khi mở web
-        setInterval(createHeart, 400);
+        setInterval(createHeart, 300);
     </script>
 </body>
 </html>
