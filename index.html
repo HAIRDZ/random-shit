@@ -3,192 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday My Love</title>
+    <title>Happy Birthday My Lil Princess</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Palette màu hồng pastel mới */
-            --pink-bg: #fff0f5;       /* Lavender Blush (hồng rất nhạt) */
-            --pink-card: #ffe4e1;     /* Misty Rose */
-            --pink-accent: #ffb6c1;    /* Light Pink */
-            --pink-text: #db7093;      /* Pale Violet Red (cho text đậm) */
-            --white-glass: rgba(255, 255, 255, 0.9);
+            --pink-bg: #fff0f5;
+            --pink-accent: #ffb6c1;
+            --pink-text: #db7093;
+            --white-glass: rgba(255, 255, 255, 0.95);
         }
 
         body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
             background: var(--pink-bg);
             font-family: 'Quicksand', sans-serif;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        canvas {
-            position: absolute;
+        /* Canvas cho pháo hoa chữ */
+        #fireworksCanvas {
+            position: fixed;
             top: 0; left: 0;
-            z-index: 1;
+            z-index: 5; /* Để pháo hoa nổi hẳn lên */
+            pointer-events: none;
+        }
+
+        .container {
+            z-index: 10;
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            margin: 50px 0;
         }
 
         .card {
-            z-index: 10;
-            text-align: center;
             background: var(--white-glass);
             padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(219, 112, 147, 0.2);
-            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(219, 112, 147, 0.15);
             border: 2px solid white;
-            max-width: 400px;
             transition: all 0.5s ease;
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: var(--pink-text);
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
         }
 
-        p {
-            color: #bc8f8f; /* Rosy Brown cho text phụ nhẹ nhàng */
-            font-size: 1.1rem;
+        .intro-text {
+            color: #bc8f8f;
+            font-size: 1.2rem;
             font-weight: 600;
+            margin-bottom: 30px;
         }
 
         .btn-open {
-            margin-top: 20px;
-            padding: 15px 40px;
-            font-size: 1.1rem;
+            padding: 15px 50px;
+            font-size: 1.2rem;
             background: var(--pink-accent);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.5);
+            box-shadow: 0 5px 20px rgba(255, 182, 193, 0.6);
             transition: 0.3s;
         }
 
-        .btn-open:hover {
-            transform: scale(1.05);
-            background: #ffc0cb; /* Pink nhạt hơn khi hover */
+        .btn-open:hover { transform: scale(1.1); background: #ffc0cb; }
+
+        /* Vùng nội dung dài kinh khủng */
+        #secret-content {
+            display: none;
+            margin-top: 30px;
+            text-align: left;
+            line-height: 2;
+            color: #8c5656;
+            animation: fadeIn 2s ease;
         }
 
-        /* Hiệu ứng bức thư ẩn */
-        #secret-message {
-            display: none;
-            margin-top: 20px;
-            line-height: 1.8;
-            font-style: italic;
-            color: #8c5656; /* Màu nâu đỏ nhạt cho thư tình */
-            animation: fadeIn 1.5s;
+        .long-letter {
+            font-size: 1.1rem;
+            white-space: pre-line;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .heart-float {
-            position: absolute;
-            pointer-events: none;
-            z-index: 5;
-            animation: float 4s linear forwards;
-            color: var(--pink-accent); /* Màu tim cũng theo tông pastel */
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) scale(1); opacity: 0.8; }
-            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: var(--pink-accent);
+            padding-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="sparkles"></canvas>
+    <!-- Thêm hiệu ứng pháo hoa chữ -->
+    <canvas id="fireworksCanvas"></canvas>
 
-    <div class="card" id="mainCard">
-        <h1 id="headline">Happy Birthday My Lil Princess! 👑</h1>
-        <p>Hôm nay là ngày đặc biệt của người con gái quan trọng nhất đời mình...</p>
-        
-        <div id="secret-message">
-            Gửi công chúa của mình,<br>
-            Chúc em tuổi mới thật nhiều niềm vui, luôn xinh đẹp và bình yên bên mình nhé. Cảm ơn em đã xuất hiện và làm cho thế giới của mình trở nên rực rỡ và ngọt ngào hơn. <br>
-            <b>Yêu em rất nhiều! ❤️</b>
+    <div class="container">
+        <div class="card" id="mainCard">
+            <h1>Happy Birthday My Lil Princess! 👑</h1>
+            <p class="intro-text">Hôm nay là một ngày thực sự đặc biệt đối với anh...</p>
+            
+            <button class="btn-open" onclick="revealSecret()" id="btnAction">Gửi công chúa của anh</button>
+
+            <div id="secret-content">
+                <div class="long-letter">
+                    Gửi công chúa nhỏ của anh, ❤️
+
+                    Chúc mừng sinh nhật em - người con gái tuyệt vời nhất mà anh từng gặp. Hôm nay, anh muốn dành những lời tốt đẹp nhất, chân thành nhất để gửi đến em. Anh đã ngồi rất lâu để suy nghĩ xem nên viết gì, vì thực sự không có từ ngữ nào diễn tả hết tình cảm của anh dành cho em.
+
+                    Em biết không, từ khi có em xuất hiện, cuộc sống của anh giống như được tưới thêm những gam màu hồng pastel rực rỡ vậy. Em mang đến tiếng cười, mang đến sự dịu dàng và cả những niềm hạnh phúc nhỏ bé mà trước đây anh chưa từng cảm nhận được.
+
+                    Anh chúc em tuổi mới luôn rạng rỡ như ánh mặt trời buổi sớm, xinh đẹp như những bông hoa hồng chớm nở và luôn giữ được nét hồn nhiên, đáng yêu này nhé. Anh mong rằng mỗi sớm mai thức dậy, em đều cảm thấy yêu đời và mỗi buổi tối đi ngủ, em đều cảm thấy bình yên.
+
+                    Dù thế giới ngoài kia có đôi lúc ồn ào hay mệt mỏi, em hãy cứ yên tâm nhé, vì luôn có anh ở đây. Anh sẽ luôn là chỗ dựa, là người lắng nghe mọi tâm sự của em, và là người cùng em đi qua những tháng ngày tươi đẹp nhất của tuổi trẻ.
+
+                    Anh hứa sẽ yêu thương em nhiều hơn mỗi ngày, chăm sóc em và cùng em tạo nên thật nhiều kỷ niệm đáng nhớ. Đừng bao giờ quên rằng em là duy nhất, là điều quý giá nhất đối với anh.
+
+                    Tuổi mới hãy thật mạnh khỏe, thành công với những dự định của mình và mãi mãi hạnh phúc bên anh em nhé! Anh yêu em rất nhiều, nhiều hơn tất cả những gì anh có thể viết ra ở đây.
+
+                    Mãi yêu em,
+                    Anh của em.
+                </div>
+            </div>
         </div>
-
-        <button class="btn-open" onclick="revealSecret()" id="btnText">Mở quà nè!</button>
+        <footer>Made with ❤️ by Anh</footer>
     </div>
 
+    <!-- Nhạc nền sinh nhật (tự động phát) -->
+    <iframe src="https://www.youtube.com/embed/jZon7_9bAog?autoplay=1&loop=1&playlist=jZon7_9bAog" width="0" height="0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+
     <script>
-        const canvas = document.getElementById('sparkles');
+        const canvas = document.getElementById('fireworksCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         function revealSecret() {
-            const msg = document.getElementById('secret-message');
-            const btn = document.getElementById('btnText');
-            const card = document.getElementById('mainCard');
+            document.getElementById('secret-content').style.display = 'block';
+            document.getElementById('btnAction').style.display = 'none';
             
-            msg.style.display = 'block';
-            btn.style.display = 'none';
-            card.style.background = 'white';
-            
-            // Bắn tim liên tục khi mở thư
-            setInterval(createHeart, 250);
+            // Bắn pháo hoa chữ "SAO MAI" bên cạnh
+            startSaoMaiFireworks();
         }
 
-        function createHeart() {
-            const heart = document.createElement('div');
-            // Dùng các emoji màu hồng/trắng nhẹ nhàng
-            heart.innerHTML = ['💖','🌸','🍥','🍬','💕'][Math.floor(Math.random()*5)];
-            heart.className = 'heart-float';
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.top = "100vh";
-            heart.style.fontSize = Math.random() * 15 + 15 + "px"; // Kích thước tim nhỏ nhắn hơn
-            heart.style.animationDuration = Math.random() * 2 + 2.5 + "s";
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 4500);
-        }
+        // Logic pháo hoa chữ
+        function startSaoMaiFireworks() {
+            const particles = [];
+            const textToSpell = "SAO MAI";
+            ctx.font = 'bold 80px sans-serif';
+            ctx.fillStyle = 'black'; // Màu tạm để vẽ ra text
+            ctx.fillText(textToSpell, canvas.width / 2 + 300, canvas.height / 2); // Vị trí bên phải card
 
-        // Hiệu ứng hạt lấp lánh nền tông hồng nhạt
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.3;
-                this.speedX = Math.random() * 0.4 - 0.2;
-                this.speedY = Math.random() * 0.4 - 0.2;
+            const textData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Xóa text tạm
+
+            for (let y = 0; y < canvas.height; y += 8) { // Khoảng cách giữa các hạt
+                for (let x = 0; x < canvas.width; x += 8) {
+                    const index = (y * canvas.width + x) * 4;
+                    if (textData[index + 3] > 128) { // Nếu ô đó có màu
+                        particles.push({
+                            x: canvas.width / 2, // Điểm xuất phát (giữa)
+                            y: canvas.height,
+                            targetX: x,
+                            targetY: y,
+                            color: `hsl(${Math.random() * 60 + 330}, 100%, 70%)`, // Màu hồng/tím lấp lánh
+                            size: Math.random() * 4 + 1,
+                            speed: Math.random() * 0.05 + 0.02
+                        });
+                    }
+                }
             }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y < 0) this.y = canvas.height;
-            }
-            draw() {
-                ctx.fillStyle = "rgba(255, 182, 193, 0.4)"; // Màu hạt hồng pastel rất nhạt
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
 
-        const particles = Array.from({length: 80}, () => new Particle());
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.x += (p.targetX - p.x) * p.speed;
+                    p.y += (p.targetY - p.y) * p.speed;
+                    
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
+                    // Hiệu ứng hạt mờ dần
+                    if (p.size > 0.1) p.size -= 0.02;
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
         }
-        animate();
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
