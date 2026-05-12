@@ -24,9 +24,8 @@
             overflow: hidden;
         }
 
-        /* Phần quà ẩn đi lúc đầu */
         #birthday-content {
-            display: none; /* Ẩn đi */
+            display: none;
             flex-direction: column;
             align-items: center;
             gap: 20px;
@@ -51,7 +50,6 @@
             animation: bounce 2s infinite alternate;
         }
 
-        /* Khu vực game */
         .game-container {
             text-align: center;
             transition: all 0.5s ease;
@@ -113,25 +111,26 @@
             color: var(--pink-dark);
             margin-top: 10px;
             font-weight: 600;
+            background: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
 
-    <!-- Container chính -->
     <div id="main-wrapper">
         
-        <!-- TRÒ CHƠI BAN ĐẦU -->
         <div class="game-container" id="game-box">
-            <!-- <div class="game-info">Hãy ăn 5 trái tim để nhận quà nhé! ❤️</div> -->
-            <div class="game-info">Điểm của Smai: <span id="scoreVal">0</span></div>
+            <div class="game-info">Hãy ăn 5 trái tim để nhận quà nhé! ❤️</div>
+            <div class="game-info">Điểm của em: <span id="scoreVal">0</span></div>
             <div class="game-section">
                 <canvas id="snakeGame" width="300" height="300"></canvas>
             </div>
-            <div id="game-hint">Sử dụng phím mũi tên để di chuyển 🐍</div>
+            <div id="game-hint" id="statusText">Nhấn phím mũi tên để bắt đầu 🐍</div>
         </div>
 
-        <!-- PHẦN QUÀ (SẼ HIỆN SAU) -->
         <div id="birthday-content">
             <div class="visuals">
                 <span>💐</span>
@@ -148,24 +147,34 @@
     </div>
 
     <script>
-        // LOGIC GAME SNAKE
         const canvas = document.getElementById("snakeGame");
         const ctx = canvas.getContext("2d");
         const scoreEl = document.getElementById("scoreVal");
         const gameBox = document.getElementById("game-box");
         const bdayContent = document.getElementById("birthday-content");
+        const hintText = document.getElementById("game-hint");
 
         const box = 20; 
         let score = 0;
         let gameActive = true;
-        let snake = [{ x: 8 * box, y: 8 * box }];
+        let gameStarted = false; // Biến kiểm tra game đã bắt đầu chưa
+
+        let snake = [{ x: 7 * box, y: 7 * box }];
         let food = {
             x: Math.floor(Math.random() * 14 + 1) * box,
             y: Math.floor(Math.random() * 14 + 1) * box
         };
-        let d = "RIGHT";
+        let d = null; // Lúc đầu không có hướng di chuyển
 
         document.addEventListener("keydown", (e) => {
+            if(!gameActive) return;
+
+            // Nếu chưa bắt đầu, bất kỳ phím mũi tên nào cũng sẽ kích hoạt game
+            if (!gameStarted && [37, 38, 39, 40].includes(e.keyCode)) {
+                gameStarted = true;
+                hintText.style.display = "none"; // Ẩn dòng hướng dẫn
+            }
+
             if(e.keyCode == 37 && d != "RIGHT") d = "LEFT";
             else if(e.keyCode == 38 && d != "DOWN") d = "UP";
             else if(e.keyCode == 39 && d != "LEFT") d = "RIGHT";
@@ -178,13 +187,18 @@
             ctx.fillStyle = "#fffafa";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            // Vẽ rắn
             for(let i = 0; i < snake.length; i++) {
                 ctx.fillStyle = (i == 0) ? "#db7093" : "#ffb6c1";
                 ctx.fillRect(snake[i].x, snake[i].y, box - 2, box - 2); 
             }
 
+            // Vẽ mồi
             ctx.font = "18px Arial";
             ctx.fillText("❤️", food.x, food.y + 16);
+
+            // Nếu game chưa bắt đầu, không chạy logic di chuyển
+            if (!gameStarted) return;
 
             let snakeX = snake[0].x;
             let snakeY = snake[0].y;
@@ -198,9 +212,9 @@
                 score++;
                 scoreEl.innerHTML = score;
                 
-                // KIỂM TRA ĐIỂM ĐỂ HIỆN QUÀ
-                if(score === 5) {
+                if(score >= 5) {
                     unlockBirthday();
+                    return;
                 }
 
                 food = {
@@ -213,23 +227,20 @@
 
             let newHead = { x: snakeX, y: snakeY };
 
+            // Kiểm tra va chạm
             if(snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || 
                snake.some((segment, index) => index !== 0 && segment.x === newHead.x && segment.y === newHead.y)) {
-                if(score < 5) {
-                    gameActive = false;
-                    alert("Co len Smai");
-                    document.location.reload();
-                }
+                gameActive = false;
+                alert("Cố lên công chúa ơi, chơi lại để nhận quà nhé!");
+                document.location.reload();
             }
             snake.unshift(newHead);
         }
 
         function unlockBirthday() {
             gameActive = false;
-            gameBox.style.display = "none"; // Ẩn game
-            bdayContent.style.display = "flex"; // Hiện quà
-            
-            // Bắt đầu hiệu ứng tim rơi lãng mạn
+            gameBox.style.display = "none";
+            bdayContent.style.display = "flex";
             setInterval(createHeart, 300);
         }
 
@@ -245,6 +256,7 @@
             setTimeout(() => heart.remove(), 5000);
         }
 
+        // Tốc độ vẽ khung hình (150ms một lần)
         let gameInterval = setInterval(draw, 150);
     </script>
 </body>
