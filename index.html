@@ -123,8 +123,8 @@
     <div id="main-wrapper">
         
         <div class="game-container" id="game-box">
-            <div class="game-info">Hãy ăn 5 trái tim để nhận quà nhé! ❤️</div>
-            <div class="game-info">Điểm của em: <span id="scoreVal">0</span></div>
+            <div class="game-info">Dùng mũi tên để di chuyển</div>
+            <div class="game-info">Điểm của Smai: <span id="scoreVal">0</span></div>
             <div class="game-section">
                 <canvas id="snakeGame" width="300" height="300"></canvas>
             </div>
@@ -231,7 +231,7 @@
             if(snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || 
                snake.some((segment, index) => index !== 0 && segment.x === newHead.x && segment.y === newHead.y)) {
                 gameActive = false;
-                alert("Cố lên công chúa ơi, chơi lại để nhận quà nhé!");
+                alert("Co len Smai!");
                 document.location.reload();
             }
             snake.unshift(newHead);
