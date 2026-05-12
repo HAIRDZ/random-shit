@@ -3,16 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Happy Birthday My Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette màu hồng pastel mới */
+            --pink-bg: #fff0f5;       /* Lavender Blush (hồng rất nhạt) */
+            --pink-card: #ffe4e1;     /* Misty Rose */
+            --pink-accent: #ffb6c1;    /* Light Pink */
+            --pink-text: #db7093;      /* Pale Violet Red (cho text đậm) */
+            --white-glass: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: var(--pink-bg);
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+
+        .card {
+            z-index: 10;
+            text-align: center;
+            background: var(--white-glass);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(219, 112, 147, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid white;
+            max-width: 400px;
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: var(--pink-text);
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        p {
+            color: #bc8f8f; /* Rosy Brown cho text phụ nhẹ nhàng */
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .btn-open {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            background: var(--pink-accent);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.5);
+            transition: 0.3s;
+        }
+
+        .btn-open:hover {
+            transform: scale(1.05);
+            background: #ffc0cb; /* Pink nhạt hơn khi hover */
+        }
+
+        /* Hiệu ứng bức thư ẩn */
+        #secret-message {
+            display: none;
+            margin-top: 20px;
+            line-height: 1.8;
+            font-style: italic;
+            color: #8c5656; /* Màu nâu đỏ nhạt cho thư tình */
+            animation: fadeIn 1.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart-float {
+            position: absolute;
+            pointer-events: none;
+            z-index: 5;
+            animation: float 4s linear forwards;
+            color: var(--pink-accent); /* Màu tim cũng theo tông pastel */
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+    </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    <div class="container">
-        <h1 id="title">Chúc Mừng Sinh Nhật! 🎂</h1>
-        <p id="message">Chúc bạn một tuổi mới thật rực rỡ, luôn vui vẻ và hạnh phúc nhé!</p>
-        <button onclick="changeMessage()">Nhấn vào đây nè!</button>
+
+    <canvas id="sparkles"></canvas>
+
+    <div class="card" id="mainCard">
+        <h1 id="headline">Happy Birthday My Lil Princess! 👑</h1>
+        <p>Hôm nay là ngày đặc biệt của người con gái quan trọng nhất đời mình...</p>
+        
+        <div id="secret-message">
+            Gửi công chúa của mình,<br>
+            Chúc em tuổi mới thật nhiều niềm vui, luôn xinh đẹp và bình yên bên mình nhé. Cảm ơn em đã xuất hiện và làm cho thế giới của mình trở nên rực rỡ và ngọt ngào hơn. <br>
+            <b>Yêu em rất nhiều! ❤️</b>
+        </div>
+
+        <button class="btn-open" onclick="revealSecret()" id="btnText">Mở quà nè!</button>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        const canvas = document.getElementById('sparkles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function revealSecret() {
+            const msg = document.getElementById('secret-message');
+            const btn = document.getElementById('btnText');
+            const card = document.getElementById('mainCard');
+            
+            msg.style.display = 'block';
+            btn.style.display = 'none';
+            card.style.background = 'white';
+            
+            // Bắn tim liên tục khi mở thư
+            setInterval(createHeart, 250);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            // Dùng các emoji màu hồng/trắng nhẹ nhàng
+            heart.innerHTML = ['💖','🌸','🍥','🍬','💕'][Math.floor(Math.random()*5)];
+            heart.className = 'heart-float';
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "100vh";
+            heart.style.fontSize = Math.random() * 15 + 15 + "px"; // Kích thước tim nhỏ nhắn hơn
+            heart.style.animationDuration = Math.random() * 2 + 2.5 + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4500);
+        }
+
+        // Hiệu ứng hạt lấp lánh nền tông hồng nhạt
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.3;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.4 - 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = "rgba(255, 182, 193, 0.4)"; // Màu hạt hồng pastel rất nhạt
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const particles = Array.from({length: 80}, () => new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
 </body>
 </html>
