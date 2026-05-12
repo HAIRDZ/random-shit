@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday My Lil Princess</title>
+    <title>A Gift for My Princess</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -24,12 +24,13 @@
             overflow: hidden;
         }
 
-        .main-layout {
-            display: flex;
+        /* Phần quà ẩn đi lúc đầu */
+        #birthday-content {
+            display: none; /* Ẩn đi */
             flex-direction: column;
             align-items: center;
             gap: 20px;
-            z-index: 10;
+            animation: scaleUp 1s ease-out;
         }
 
         .content-row {
@@ -50,6 +51,12 @@
             animation: bounce 2s infinite alternate;
         }
 
+        /* Khu vực game */
+        .game-container {
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
         .game-section {
             background: white;
             padding: 15px;
@@ -62,30 +69,27 @@
             background: #fffafa;
             display: block;
             border-radius: 10px;
-            border: 1px solid #eee;
         }
 
         .game-info {
             color: var(--pink-dark);
             font-weight: bold;
             margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 2.8rem;
+            font-size: 3rem;
             color: var(--pink-dark);
-            margin: 15px 0 0 0;
-            text-align: center;
+            margin: 15px 0;
         }
 
-        .visuals {
-            display: flex;
-            gap: 20px;
-            font-size: 40px;
+        .visuals { font-size: 45px; margin-bottom: 10px; }
+
+        @keyframes scaleUp {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         @keyframes bounce {
@@ -104,63 +108,61 @@
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); }
         }
+
+        #game-hint {
+            color: var(--pink-dark);
+            margin-top: 10px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
 
-    <div class="main-layout">
-        <div class="visuals">
-            <span>💐</span>
-            <span>🎂</span>
-        </div>
-
-        <div class="content-row">
-            <div class="photo-section">
-                <!-- Nhớ đổi tên file ảnh cho đúng nhé -->
-                <img src="anh-cua-toi.jpg" alt="My Princess" class="photo-frame">
-            </div>
-
+    <!-- Container chính -->
+    <div id="main-wrapper">
+        
+        <!-- TRÒ CHƠI BAN ĐẦU -->
+        <div class="game-container" id="game-box">
+            <div class="game-info">Hãy ăn 5 trái tim để nhận quà nhé! ❤️</div>
+            <div class="game-info">Điểm của em: <span id="scoreVal">0</span></div>
             <div class="game-section">
-                <div class="game-info">
-                    <span>Điểm: <span id="scoreVal">0</span></span>
-                    <span>Snake 🐍</span>
-                </div>
                 <canvas id="snakeGame" width="300" height="300"></canvas>
             </div>
+            <div id="game-hint">Sử dụng phím mũi tên để di chuyển 🐍</div>
         </div>
 
-        <h1>Happy Birthday My Lil Princess</h1>
+        <!-- PHẦN QUÀ (SẼ HIỆN SAU) -->
+        <div id="birthday-content">
+            <div class="visuals">
+                <span>💐</span>
+                <span>🎂</span>
+            </div>
+            <div class="content-row">
+                <div class="photo-section">
+                    <img src="anh-cua-toi.jpg" alt="My Princess" class="photo-frame">
+                </div>
+            </div>
+            <h1>Happy Birthday My Lil Princess</h1>
+        </div>
+
     </div>
 
     <script>
-        // HIỆU ỨNG TIM RƠI
-        setInterval(() => {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = ['🌸','❤️','💕'][Math.floor(Math.random()*3)];
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.top = '-10%';
-            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
-        }, 400);
-
         // LOGIC GAME SNAKE
         const canvas = document.getElementById("snakeGame");
         const ctx = canvas.getContext("2d");
         const scoreEl = document.getElementById("scoreVal");
+        const gameBox = document.getElementById("game-box");
+        const bdayContent = document.getElementById("birthday-content");
 
         const box = 20; 
         let score = 0;
         let gameActive = true;
-
         let snake = [{ x: 8 * box, y: 8 * box }];
         let food = {
             x: Math.floor(Math.random() * 14 + 1) * box,
             y: Math.floor(Math.random() * 14 + 1) * box
         };
-
         let d = "RIGHT";
 
         document.addEventListener("keydown", (e) => {
@@ -176,13 +178,11 @@
             ctx.fillStyle = "#fffafa";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Vẽ rắn
             for(let i = 0; i < snake.length; i++) {
                 ctx.fillStyle = (i == 0) ? "#db7093" : "#ffb6c1";
                 ctx.fillRect(snake[i].x, snake[i].y, box - 2, box - 2); 
             }
 
-            // Vẽ mồi ❤️
             ctx.font = "18px Arial";
             ctx.fillText("❤️", food.x, food.y + 16);
 
@@ -194,10 +194,15 @@
             if( d == "RIGHT") snakeX += box;
             if( d == "DOWN") snakeY += box;
 
-            // Ăn mồi
             if(snakeX == food.x && snakeY == food.y) {
                 score++;
                 scoreEl.innerHTML = score;
+                
+                // KIỂM TRA ĐIỂM ĐỂ HIỆN QUÀ
+                if(score === 5) {
+                    unlockBirthday();
+                }
+
                 food = {
                     x: Math.floor(Math.random() * 14 + 1) * box,
                     y: Math.floor(Math.random() * 14 + 1) * box
@@ -208,18 +213,39 @@
 
             let newHead = { x: snakeX, y: snakeY };
 
-            // Kiểm tra va chạm
             if(snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || 
                snake.some((segment, index) => index !== 0 && segment.x === newHead.x && segment.y === newHead.y)) {
-                gameActive = false;
-                alert("Game Over! Điểm của công chúa là: " + score);
-                document.location.reload();
+                if(score < 5) {
+                    gameActive = false;
+                    alert("Cố lên công chúa ơi, sắp được 5 điểm rồi!");
+                    document.location.reload();
+                }
             }
-
             snake.unshift(newHead);
         }
 
-        setInterval(draw, 150);
+        function unlockBirthday() {
+            gameActive = false;
+            gameBox.style.display = "none"; // Ẩn game
+            bdayContent.style.display = "flex"; // Hiện quà
+            
+            // Bắt đầu hiệu ứng tim rơi lãng mạn
+            setInterval(createHeart, 300);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = ['🌸','❤️','💕','✨'][Math.floor(Math.random()*4)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '-10%';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        let gameInterval = setInterval(draw, 150);
     </script>
 </body>
-</html>s
+</html>
