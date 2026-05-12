@@ -4,213 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday My Lil Princess</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --pink-bg: #fff0f5;
-            --pink-accent: #ffb6c1;
-            --pink-text: #db7093;
-            --white-glass: rgba(255, 255, 255, 0.95);
-        }
-
         body {
             margin: 0;
             padding: 0;
-            background: var(--pink-bg);
-            font-family: 'Quicksand', sans-serif;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Canvas cho pháo hoa chữ */
-        #fireworksCanvas {
-            position: fixed;
-            top: 0; left: 0;
-            z-index: 5; /* Để pháo hoa nổi hẳn lên */
-            pointer-events: none;
+            background-color: #fff0f5; /* Hồng pastel cực nhạt */
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
         }
 
         .container {
-            z-index: 10;
             text-align: center;
-            width: 90%;
-            max-width: 600px;
-            margin: 50px 0;
-        }
-
-        .card {
-            background: var(--white-glass);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(219, 112, 147, 0.15);
-            border: 2px solid white;
-            transition: all 0.5s ease;
+            z-index: 10;
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
             font-size: 3.5rem;
-            color: var(--pink-text);
+            color: #db7093;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+            animation: fadeIn 2s ease-in;
+        }
+
+        .visuals {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 40px;
             margin-bottom: 20px;
+            animation: slideUp 1.5s ease-out;
         }
 
-        .intro-text {
-            color: #bc8f8f;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 30px;
+        /* Hiệu ứng cho hoa và bánh */
+        .flower, .cake {
+            font-size: 100px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+            transition: transform 0.3s ease;
         }
 
-        .btn-open {
-            padding: 15px 50px;
-            font-size: 1.2rem;
-            background: var(--pink-accent);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255, 182, 193, 0.6);
-            transition: 0.3s;
-        }
-
-        .btn-open:hover { transform: scale(1.1); background: #ffc0cb; }
-
-        /* Vùng nội dung dài kinh khủng */
-        #secret-content {
-            display: none;
-            margin-top: 30px;
-            text-align: left;
-            line-height: 2;
-            color: #8c5656;
-            animation: fadeIn 2s ease;
-        }
-
-        .long-letter {
-            font-size: 1.1rem;
-            white-space: pre-line;
+        .flower:hover, .cake:hover {
+            transform: scale(1.1) rotate(5deg);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(50px); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        footer {
-            margin-top: 50px;
-            font-size: 0.9rem;
-            color: var(--pink-accent);
-            padding-bottom: 20px;
+        /* Hiệu ứng tim rơi lãng mạn */
+        .heart {
+            position: absolute;
+            color: #ffb6c1;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Thêm hiệu ứng pháo hoa chữ -->
-    <canvas id="fireworksCanvas"></canvas>
-
     <div class="container">
-        <div class="card" id="mainCard">
-            <h1>Happy Birthday My Lil Princess! 👑</h1>
-            <p class="intro-text">Hôm nay là một ngày thực sự đặc biệt đối với anh...</p>
-            
-            <button class="btn-open" onclick="revealSecret()" id="btnAction">Gửi công chúa của anh</button>
-
-            <div id="secret-content">
-                <div class="long-letter">
-                    Gửi công chúa nhỏ của anh, ❤️
-
-                    Chúc mừng sinh nhật em - người con gái tuyệt vời nhất mà anh từng gặp. Hôm nay, anh muốn dành những lời tốt đẹp nhất, chân thành nhất để gửi đến em. Anh đã ngồi rất lâu để suy nghĩ xem nên viết gì, vì thực sự không có từ ngữ nào diễn tả hết tình cảm của anh dành cho em.
-
-                    Em biết không, từ khi có em xuất hiện, cuộc sống của anh giống như được tưới thêm những gam màu hồng pastel rực rỡ vậy. Em mang đến tiếng cười, mang đến sự dịu dàng và cả những niềm hạnh phúc nhỏ bé mà trước đây anh chưa từng cảm nhận được.
-
-                    Anh chúc em tuổi mới luôn rạng rỡ như ánh mặt trời buổi sớm, xinh đẹp như những bông hoa hồng chớm nở và luôn giữ được nét hồn nhiên, đáng yêu này nhé. Anh mong rằng mỗi sớm mai thức dậy, em đều cảm thấy yêu đời và mỗi buổi tối đi ngủ, em đều cảm thấy bình yên.
-
-                    Dù thế giới ngoài kia có đôi lúc ồn ào hay mệt mỏi, em hãy cứ yên tâm nhé, vì luôn có anh ở đây. Anh sẽ luôn là chỗ dựa, là người lắng nghe mọi tâm sự của em, và là người cùng em đi qua những tháng ngày tươi đẹp nhất của tuổi trẻ.
-
-                    Anh hứa sẽ yêu thương em nhiều hơn mỗi ngày, chăm sóc em và cùng em tạo nên thật nhiều kỷ niệm đáng nhớ. Đừng bao giờ quên rằng em là duy nhất, là điều quý giá nhất đối với anh.
-
-                    Tuổi mới hãy thật mạnh khỏe, thành công với những dự định của mình và mãi mãi hạnh phúc bên anh em nhé! Anh yêu em rất nhiều, nhiều hơn tất cả những gì anh có thể viết ra ở đây.
-
-                    Mãi yêu em,
-                    Anh của em.
-                </div>
-            </div>
+        <div class="visuals">
+            <div class="flower">💐</div>
+            <div class="cake">🎂</div>
         </div>
-        <footer>Made with ❤️ by Anh</footer>
+        <h1>Happy Bỉthday My Lil Princess</h1>
     </div>
 
-    <!-- Nhạc nền sinh nhật (tự động phát) -->
-    <iframe src="https://www.youtube.com/embed/jZon7_9bAog?autoplay=1&loop=1&playlist=jZon7_9bAog" width="0" height="0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-
     <script>
-        const canvas = document.getElementById('fireworksCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '🌸'; // Bạn có thể đổi thành '❤️' nếu muốn
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.opacity = Math.random();
+            document.body.appendChild(heart);
 
-        function revealSecret() {
-            document.getElementById('secret-content').style.display = 'block';
-            document.getElementById('btnAction').style.display = 'none';
-            
-            // Bắn pháo hoa chữ "SAO MAI" bên cạnh
-            startSaoMaiFireworks();
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
         }
 
-        // Logic pháo hoa chữ
-        function startSaoMaiFireworks() {
-            const particles = [];
-            const textToSpell = "SAO MAI";
-            ctx.font = 'bold 80px sans-serif';
-            ctx.fillStyle = 'black'; // Màu tạm để vẽ ra text
-            ctx.fillText(textToSpell, canvas.width / 2 + 300, canvas.height / 2); // Vị trí bên phải card
-
-            const textData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Xóa text tạm
-
-            for (let y = 0; y < canvas.height; y += 8) { // Khoảng cách giữa các hạt
-                for (let x = 0; x < canvas.width; x += 8) {
-                    const index = (y * canvas.width + x) * 4;
-                    if (textData[index + 3] > 128) { // Nếu ô đó có màu
-                        particles.push({
-                            x: canvas.width / 2, // Điểm xuất phát (giữa)
-                            y: canvas.height,
-                            targetX: x,
-                            targetY: y,
-                            color: `hsl(${Math.random() * 60 + 330}, 100%, 70%)`, // Màu hồng/tím lấp lánh
-                            size: Math.random() * 4 + 1,
-                            speed: Math.random() * 0.05 + 0.02
-                        });
-                    }
-                }
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                for (let i = 0; i < particles.length; i++) {
-                    const p = particles[i];
-                    p.x += (p.targetX - p.x) * p.speed;
-                    p.y += (p.targetY - p.y) * p.speed;
-                    
-                    ctx.fillStyle = p.color;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    // Hiệu ứng hạt mờ dần
-                    if (p.size > 0.1) p.size -= 0.02;
-                }
-                requestAnimationFrame(animate);
-            }
-            animate();
-        }
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+        // Tạo hiệu ứng rơi nhẹ nhàng ngay khi mở web
+        setInterval(createHeart, 400);
     </script>
 </body>
 </html>
